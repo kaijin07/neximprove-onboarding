@@ -1,0 +1,46 @@
+# ---- Secrets: NEVER commit these ----
+.env
+.env.*
+!.env.example
+
+# ---- Dependencies ----
+node_modules/
+.pnp
+.pnp.js
+
+# ---- Build output ----
+dist/
+build/
+*.local
+
+# ---- Logs ----
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- Editors / OS ----
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Prisma ----
+# generated client is rebuilt by `prisma generate` — never committed
+backend/generated/
+generated/prisma/
+skills-lock.json
+.agents/
+.windsurf/
+
+# ---- Misc ----
+coverage/
+.cache/
+*.tsbuildinfo
+
+# ---- Personal working notes, not part of the deliverable ----
+docs/

@@ -1,0 +1,45 @@
+{
+  "name": "neximprove-onboarding-backend",
+  "version": "1.0.0",
+  "description": "Customer onboarding API — Express + Prisma + PostgreSQL",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node src/server.js",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma migrate deploy",
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "db:seed": "node prisma/seed.js",
+    "test:api": "node scripts/smoke-test.mjs",
+    "postinstall": "prisma generate"
+  },
+  "keywords": [
+    "express",
+    "prisma",
+    "postgresql",
+    "jwt",
+    "bcrypt"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.9.1",
+    "@prisma/client": "^7.9.1",
+    "bcryptjs": "^3.0.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.6.1",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "morgan": "^1.11.0",
+    "pg": "^8.22.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "prisma": "^7.9.1"
+  }
+}

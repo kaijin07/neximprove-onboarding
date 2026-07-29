@@ -1,0 +1,32 @@
+# Render blueprint. With this file in the repo, Render can create the service
+# from the repository without any manual configuration.
+#
+# One web service: Express serves the API and the built React app together.
+
+services:
+  - type: web
+    name: neximprove-onboarding
+    runtime: node
+    plan: free
+    region: singapore
+
+    # Installs both packages, applies pending migrations, builds the frontend.
+    buildCommand: npm run build
+    startCommand: npm start
+
+    # Render restarts the service if this stops returning 200. The endpoint
+    # checks the database too, not just that the process is alive.
+    healthCheckPath: /api/health
+
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      # Render generates a random value on first deploy, so the signing key is
+      # never written down anywhere.
+      - key: JWT_SECRET
+        generateValue: true
+
+      # Prompted for on deploy rather than stored here, since it's a credential.
+      - key: DATABASE_URL
+        sync: false

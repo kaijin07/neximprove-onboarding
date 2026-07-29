@@ -1,0 +1,42 @@
+// Prisma 7's newer `prisma-client` generator outputs TypeScript. This project is
+// plain JavaScript, so it uses `prisma-client-js`, which emits JavaScript into
+// node_modules and is imported as `@prisma/client`.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// One table covers both sides of the brief: a CUSTOMER is an exporter/importer
+// who registers and sees their own profile, an ADMIN is the customs broker who
+// can see everyone.
+model User {
+  // UUID rather than an auto-incrementing number, so IDs don't reveal how many
+  // customers exist or allow guessing /users/1, /users/2.
+  id String @id @default(uuid())
+
+  name  String @db.VarChar(100)
+  email String @unique @db.VarChar(255)
+
+  // 15-character GSTIN, format-checked before it reaches the database.
+  gstin String @unique @db.VarChar(15)
+
+  // Named passwordHash rather than password so the schema itself makes clear
+  // that plain text is never stored.
+  passwordHash String
+
+  // Set by the server on registration, never read from the request body.
+  role Role @default(CUSTOMER)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+enum Role {
+  CUSTOMER
+  ADMIN
+}

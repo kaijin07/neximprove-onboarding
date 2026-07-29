@@ -1,0 +1,36 @@
+# Local PostgreSQL for reviewers who would rather not create a Neon account.
+#
+#   docker compose up -d
+#
+# Then set this in backend/.env and run `npx prisma migrate deploy`:
+#   DATABASE_URL="postgresql://neximprove:neximprove@localhost:5432/neximprove"
+#
+# These credentials are intentionally throwaway and local-only.
+
+# Set explicitly so the container, network and volume names don't depend on
+# whatever the checkout folder happens to be called.
+name: neximprove-onboarding
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: neximprove-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: neximprove
+      POSTGRES_PASSWORD: neximprove
+      POSTGRES_DB: neximprove
+    ports:
+      - '5432:5432'
+    volumes:
+      - neximprove-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # Wait for Postgres to actually accept connections, not just for the
+      # container to start — `prisma migrate` run too early will fail otherwise.
+      test: ['CMD-SHELL', 'pg_isready -U neximprove -d neximprove']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  neximprove-pgdata:
